@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specter Beats - Zones Experience</title>
+    <meta name="description" content="Professional DJ services with a supernatural twist. Bringing Halloween-themed entertainment and cutting-edge technology to communities worldwide.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Figtree Font -->
+    <style>
+        @font-face {
+            font-family: 'Figtree';
+            src: url('./fonts/Figtree-VariableFont_wght.ttf') format('truetype');
+            font-weight: 300 900;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'Figtree';
+            src: url('./fonts/Figtree-Italic-VariableFont_wght.ttf') format('truetype');
+            font-weight: 300 900;
+            font-style: italic;
+            font-display: swap;
+        }
+    </style>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'figtree': ['Figtree', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        'halloween-orange': '#FF6B35',
+                        'halloween-purple': '#6B46C1',
+                        'spooky-dark': '#1A1A2E',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles -->
+    <style>
+        /* Hero Section */
+        #hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 600px;
+            background: #1A1A2E;
+            overflow: hidden;
+        }
+
+        /* Hero Bottom Shadow - Covers Spline Watermark & Creates Transition */
+        #hero::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to bottom, transparent 0%, rgba(26, 26, 46, 0.85) 30%, rgba(26, 26, 46, 0.98) 60%, #1A1A2E 85%, #1A1A2E 100%);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @media only screen and (min-width: 768px) {
+            #hero::after {
+                height: 150px;
+            }
+        }
+
+        @media only screen and (min-width: 1024px) {
+            #hero::after {
+                height: 180px;
+            }
+        }
+
+        #hero-spline {
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+        
+        #hero-loading {
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        #hero iframe {
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        /* Zones Sticky Component */
+        .zones_sticky_component {
+            position: relative;
+            width: 100%;
+        }
+
+        .single_zone_slide {
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 0;
+        }
+
+        .single_zone_slide .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+            z-index: 2;
+            position: relative;
+        }
+
+        .content_wrapper {
+            max-width: 800px;
+            color: white;
+        }
+
+        .content_wrapper h2 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #FF6B35;
+            margin-bottom: 1rem;
+        }
+
+        .content_wrapper h3 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .content_wrapper .description {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .logo_wrapper {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: 500px;
+            opacity: 0.12;
+            z-index: 1;
+        }
+
+        .logo_wrapper img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Gradients */
+        .gradient {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .gradient-top {
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(26, 26, 46, 0.95), transparent);
+        }
+
+        .gradient-bottom {
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to top, rgba(26, 26, 46, 0.95), transparent);
+        }
+
+        .gradient-left {
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 200px;
+            background: linear-gradient(to right, rgba(26, 26, 46, 0.8), transparent);
+        }
+
+        .gradient-right {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 200px;
+            background: linear-gradient(to left, rgba(26, 26, 46, 0.8), transparent);
+        }
+
+        /* Horizontal Navigation */
+        .horizontal-nav {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        @media only screen and (min-width: 1024px) {
+            .horizontal-nav {
+                display: block;
+            }
+        }
+
+        .nav-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            position: relative;
+            width: 90vw;
+        }
+
+        @media only screen and (min-width: 1024px) {
+            .nav-line {
+                gap: 50px;
+                width: auto;
+            }
+        }
+
+        .nav-line::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            right: 0;
+            width: calc(100% - 2.75rem);
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .nav-dot {
+            width: 13.416px;
+            height: 16.692px;
+            background: rgba(255, 255, 255, 0.4);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease, width 0.3s ease, height 0.3s ease;
+            border: none;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .nav-dot:hover {
+            transform: scale(1.3);
+            background: rgba(255, 107, 53, 0.6);
+        }
+
+        .nav-dot.active {
+            width: 32.429px;
+            height: 39.021px;
+            transform: scale(1.1);
+            background: #FF6B35;
+            clip-path: polygon(
+                20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 
+                50% 70%, 80% 100%, 100% 80%, 70% 50%, 
+                100% 20%, 80% 0%, 50% 30%
+            );
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.8);
+        }
+
+        /* Button Styles with Transitions */
+        .btn--red,
+        .book-now-btn a {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .btn--red:hover,
+        .book-now-btn:hover {
+            transform: scale(1.07);
+            opacity: 0.9;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Link Hover Effects */
+        a {
+            transition: all 0.2s ease-in-out;
+        }
+
+        a:hover {
+            opacity: 0.85;
+            transform: scale(0.98);
+        }
+
+        /* Navigation Link Effects */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Card/Content Transitions */
+        .single_zone_slide {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Improved Typography */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content_wrapper {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Flickering Effect for Spooky Elements */
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Hover Effect for Navigation Dots */
+        .nav-dot {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-dot:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.5);
+        }
+
+        /* Improved Logo Animation */
+        #logo {
+            transition: all 0.25s ease-in-out;
+        }
+
+        #logo:hover {
+            opacity: 0.75;
+            transform: scale(0.97);
+        }
+
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Gradient Background Animation */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Page Transition Effect */
+        .page-content {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Interactive Elements */
+        button, .btn {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        button:hover, .btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        button:active, .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Zone Slide Entrance */
+        .single_zone_slide .container {
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Text Glow Effect for Headers */
+        h2, h3 {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Improved Image Loading */
+        img {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        img:hover {
+            opacity: 0.95;
+        }
+
+        /* Footer Links */
+        footer a {
+            transition: all 0.2s ease-in-out;
+        }
+
+        footer a:hover {
+            color: #FF6B35;
+            transform: translateX(3px);
+        }
+
+        /* Prevent Text Selection on UI Elements */
+        .nav-dot, button {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+            @keyframes spookyFlicker {
+            0%, 100% { opacity: 1; }
+            90% { opacity: 0.4; }
+            95% { opacity: 0.1; }
+            }
+            #logo, h3 {
+            animation: spookyFlicker 4s infinite ease-in-out;
+            }
+
+
+        /* Mobile Gradients */
+        .gradient-mobile {
+            position: fixed;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            pointer-events: none;
+            display: none;
+        }
+
+        .gradient-mobile-top {
+            top: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(26, 26, 46, 1), transparent);
+        }
+
+        .gradient-mobile-bottom {
+            bottom: 0;
+            height: 100px;
+            background: linear-gradient(to top, rgba(26, 26, 46, 1), transparent);
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            #hero {
+                height: 100vh;
+                min-height: 600px;
+            }
+
+            .single_zone_slide {
+                background-attachment: scroll;
+            }
+
+            .content_wrapper h3 {
+                font-size: 2.5rem;
+            }
+
+            .logo_wrapper {
+                display: none;
+            }
+
+            .horizontal-nav {
+                right: 1rem;
+            }
+
+            .nav-dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .gradient-mobile {
+                display: block;
+            }
+
+            .container[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+            }
+
+            .globe-container {
+                max-width: 400px !important;
+                justify-self: center !important;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body class="font-figtree bg-spooky-dark text-white">
+    <!-- Navigation -->
+    <header>
+        <nav id="navbar" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-auto">
+            <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-6 py-3 shadow-lg">
+                <div class="flex items-center space-x-8">
+                    <!-- Brand -->
+                    <div class="text-xl font-bold text-white">
+                        Specter Beats
+                    </div>
+                    
+                    <!-- Navigation Items -->
+                    <div class="hidden md:flex items-center space-x-6">
+                        <a href="#about" class="text-white/80 hover:text-white transition-colors duration-300 px-3 py-2 rounded-full hover:bg-white/10 nav-link">
+                            About
+                        </a>
+                        <a href="#how-it-works" class="text-white/80 hover:text-white transition-colors duration-300 px-3 py-2 rounded-full hover:bg-white/10 nav-link">
+                            How It Works
+                        </a>
+                        <a href="#technology" class="text-white/80 hover:text-white transition-colors duration-300 px-3 py-2 rounded-full hover:bg-white/10 nav-link">
+                            Technology
+                        </a>
+                        <a href="#impact" class="text-white/80 hover:text-white transition-colors duration-300 px-3 py-2 rounded-full hover:bg-white/10 nav-link">
+                            Impact
+                        </a>
+                    </div>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden text-white/80 hover:text-white transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Mobile Menu -->
+                <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-white/20">
+                    <div class="flex flex-col space-y-2">
+                        <a href="#about" class="text-white/80 hover:text-white transition-colors duration-300 px-3 py-2 rounded-full hover:bg-white/10 text-center">
+                            About
+                        </a>
+                        <a href="#how-it-works" class="text-white/80 hover:text-white transition-colors duration-300 px-3 py-2 rounded-full hover:bg-white/10 text-center">
+                            How It Works
+                        </a>
+                        <a href="#technology" class="text-white/80 hover:text-white transition-colors duration-300 px-3 py-2 rounded-full hover:bg-white/10 text-center">
+                            Technology
+                        </a>
+                        <a href="#impact" class="text-white/80 hover:text-white transition-colors duration-300 px-3 py-2 rounded-full hover:bg-white/10 text-center">
+                            Impact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen w-full relative overflow-hidden">
+            <div class="w-full h-screen relative">
+                <!-- Loading State -->
+                <div id="hero-loading" class="absolute inset-0 flex items-center justify-center bg-spooky-dark z-10">
+                    <div class="text-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-halloween-orange mx-auto mb-4"></div>
+                        <p class="text-white/80">Loading Halloween Experience...</p>
+                    </div>
+                </div>
+                
+                <!-- Spline Embed -->
+                <iframe 
+                    id="hero-spline"
+                    src="https://my.spline.design/eyeonyou-AkB1W8TYF2ZkPbN0aOjhMs4c/" 
+                    frameborder="0" 
+                    width="100%" 
+                    height="100%"
+                    class="absolute inset-0 w-full h-full"
+                    title="Halloween-themed 3D Scene"
+                    loading="lazy"
+                    onload="hideHeroLoading()"
+                    onerror="showHeroError()">
+                </iframe>
+                
+                <!-- Error Fallback -->
+                <div id="hero-error" class="hidden absolute inset-0 flex items-center justify-center bg-gradient-to-br from-halloween-purple to-spooky-dark">
+                    <div class="text-center max-w-md mx-auto px-6">
+                        <div class="text-6xl mb-4">🎃</div>
+                        <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">
+                            Specter Beats
+                        </h1>
+                        <p class="text-xl text-white/80 mb-8">
+                            Professional DJ Services with a Supernatural Twist
+                        </p>
+                        <p class="text-sm text-white/60">
+                            Interactive 3D experience temporarily unavailable
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Zones Sticky Component -->
+        <div class="zones_sticky_component" tabindex="0">
+            <div class="zones_sticky_component_wrapper">
+                <div class="zones_slides_wrapper">
+                    
+                    <!-- Zone 1: About Us -->
+                    <div id="about" class="single_zone_slide" style="background-image: url(phase1.png);">
+                        <div class="container">
+                            <div class="content_wrapper">
+                                <h2>🕸 ABOUT US</h2>
+                                <h3>ACCESSIBLE MUSIC FOR EVERYONE</h3>
+                                <div class="description"><p><span style="font-weight: 400;">SpecterBeats is a lightweight, browser-based DJ experience that lets anyone anywhere in the world mix music — no expensive gear, no downloads, no limits. Using only your camera and creativity, you can control beats, filters, and effects through simple gestures and movement.</span></p>
+<p style="margin-top: 1.5rem;"><span style="font-weight: 400;">Our goal is to make DJing accessible, inclusive, and fun for everyone — whether you're in a city apartment, a rural village, or a crowded dorm. </span><i><span style="font-weight: 400;">Music connects people, and we're here to make sure technology doesn't get in the way of that connection.</span></i></p>
+</div>
+                            </div>
+                        </div>
+                        
+                        <div class="gradient gradient-top"></div>
+                        <div class="gradient gradient-bottom"></div>
+                        <div class="gradient gradient-left"></div>
+                        <div class="gradient gradient-right"></div>
+                    </div>
+
+                    <!-- Zone 2: How It Works -->
+                    <div id="how-it-works" class="single_zone_slide" style="background-image: url(https://scarecity.co.uk/wp-content/uploads/2025/04/THE-HOLLOW-BG-1.png);">
+                        <div class="container">
+                            <div class="content_wrapper">
+                                <h2>💀 HOW IT WORKS</h2>
+                                <h3>CAMERA-BASED MIXING</h3>
+                                <div class="description"><p><span style="font-weight: 400;">SpecterBeats transforms your camera into a powerful DJ controller. Raise your hand to shift the tempo, nod your head to trigger effects, move your body to mix tracks — every motion becomes part of the rhythm.</span></p>
+<p style="margin-top: 1.5rem;"><span style="font-weight: 400;">No turntables, no MIDI boards — just you and the music. </span><i><span style="font-weight: 400;">It runs right in your browser, powered by AI gesture tracking and web audio synthesis, so anyone with an internet connection can join the mix.</span></i></p>
+</div>
+                            </div>
+                        </div>
+                        
+                        <div class="gradient gradient-top"></div>
+                        <div class="gradient gradient-bottom"></div>
+                        <div class="gradient gradient-left"></div>
+                        <div class="gradient gradient-right"></div>
+                    </div>
+
+                    <!-- Zone 3: Technology - Web-Based -->
+                    <div id="technology" class="single_zone_slide" style="background-image: url(phase3.png);">
+                        <div class="container">
+                            <div class="content_wrapper">
+                                <h2>🧠 TECHNOLOGY</h2>
+                                <h3>LIGHTWEIGHT AND UNIVERSAL</h3>
+                                <div class="description"><p><span style="font-weight: 400;">Built for performance and accessibility, SpecterBeats runs smoothly on any modern device — laptop, tablet, or phone. <strong>Web-Based:</strong> No downloads, no installations — just open the site and play.</span></p>
+<p style="margin-top: 1.5rem;"><span style="font-weight: 400;"><strong>Camera-Powered:</strong> Uses AI gesture recognition (MediaPipe / TensorFlow.js) to turn motion into music. </span><i><span style="font-weight: 400;">Designed to work seamlessly on low-end hardware, so no one gets left out.</span></i></p>
+</div>
+                            </div>
+                        </div>
+                        
+                        <div class="gradient gradient-top"></div>
+                        <div class="gradient gradient-bottom"></div>
+                        <div class="gradient gradient-left"></div>
+                        <div class="gradient gradient-right"></div>
+                    </div>
+
+                    <!-- Zone 4: Technology - Sound Engine -->
+                    <div class="single_zone_slide" style="background-image: url(phase4.png);">
+                        <div class="container">
+                            <div class="content_wrapper">
+                                <h2>🧠 TECHNOLOGY</h2>
+                                <h3>SOUND ENGINE</h3>
+                                <div class="description"><p><span style="font-weight: 400;"><strong>Tone.js and Web Audio API:</strong> Deliver real-time mixing and effects right in your browser. Professional-quality audio processing that responds instantly to your movements.</span></p>
+<p style="margin-top: 1.5rem;"><span style="font-weight: 400;"><strong>Optimized for All Devices:</strong> From high-end laptops to budget smartphones, SpecterBeats works seamlessly everywhere. </span><i><span style="font-weight: 400;">No expensive hardware required — just your device and your creativity.</span></i></p>
+</div>
+                            </div>
+                        </div>
+                        
+                        <div class="gradient gradient-top"></div>
+                        <div class="gradient gradient-bottom"></div>
+                        <div class="gradient gradient-left"></div>
+                        <div class="gradient gradient-right"></div>
+                    </div>
+
+                    <!-- Zone 5: Technology - AI Gesture Recognition -->
+                    <div class="single_zone_slide" style="background-image: url(phase5.png);">
+                        <div class="container">
+                            <div class="content_wrapper">
+                                <h2>🧠 TECHNOLOGY</h2>
+                                <h3>AI GESTURE RECOGNITION</h3>
+                                <div class="description"><p><span style="font-weight: 400;"><strong>MediaPipe & TensorFlow.js:</strong> Advanced machine learning models track your movements in real-time, translating gestures into musical control. Wave, point, dance — every motion becomes an instrument.</span></p>
+<p style="margin-top: 1.5rem;"><span style="font-weight: 400;"><strong>Accessible Innovation:</strong> Cutting-edge technology made simple and universal. </span><i><span style="font-weight: 400;">No training required — the AI learns from you, making DJing intuitive for everyone.</span></i></p>
+</div>
+                            </div>
+                        </div>
+                        
+                        <div class="gradient gradient-top"></div>
+                        <div class="gradient gradient-bottom"></div>
+                        <div class="gradient gradient-left"></div>
+                        <div class="gradient gradient-right"></div>
+                    </div>
+
+                    <!-- Zone 6: Community Impact - Global Accessibility -->
+                    <div id="impact" class="single_zone_slide" style="background-image: url(phase6.png);">
+                        <div class="container">
+                            <div class="content_wrapper">
+                                <h2>🌍 COMMUNITY IMPACT</h2>
+                                <h3>GLOBAL ACCESSIBILITY</h3>
+                                <div class="description"><p><span style="font-weight: 400;">In many parts of the world, professional DJ gear is expensive or impossible to access. SpecterBeats removes that barrier — offering a free, browser-based alternative that empowers anyone to create, mix, and perform.</span></p>
+<p style="margin-top: 1.5rem;"><span style="font-weight: 400;">By transforming something as simple as a webcam into a musical instrument, we make self-expression universal. </span><i><span style="font-weight: 400;">A celebration of creativity that transcends borders, resources, and experience levels.</span></i></p>
+</div>
+                            </div>
+                        </div>
+                        
+                        <div class="gradient gradient-top"></div>
+                        <div class="gradient gradient-bottom"></div>
+                        <div class="gradient gradient-left"></div>
+                        <div class="gradient gradient-right"></div>
+                    </div>
+
+                    <!-- Zone 7: Community Impact - Community Connection -->
+                    <div class="single_zone_slide" style="background-image: url(phase7.png);">
+                        <div class="container">
+                            <div class="content_wrapper">
+                                <h2>🌍 COMMUNITY IMPACT</h2>
+                                <h3>COMMUNITY CONNECTION</h3>
+                                <div class="description"><p><span style="font-weight: 400;">SpecterBeats isn't just about making music — it's about bringing people together. Host virtual DJ sessions, collaborate across continents, or throw spontaneous dance parties from your browser.</span></p>
+<p style="margin-top: 1.5rem;"><span style="font-weight: 400;">It's a shared creative space where anyone can express themselves and be part of a global rhythm. </span><i><span style="font-weight: 400;">Music connects people, and we're making sure everyone can be part of that connection.</span></i></p>
+</div>
+                            </div>
+                        </div>
+                        
+                        <div class="gradient gradient-top"></div>
+                        <div class="gradient gradient-bottom"></div>
+                        <div class="gradient gradient-left"></div>
+                        <div class="gradient gradient-right"></div>
+                    </div>
+
+                    <!-- Zone 8: Community Impact - Technology for Impact -->
+                    <div class="single_zone_slide" style="background-image: url(phase8.png);">
+                        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; max-width: 1400px;">
+                            <div class="content_wrapper" style="max-width: none;">
+                                <h2>🌍 COMMUNITY IMPACT</h2>
+                                <h3>TECHNOLOGY FOR IMPACT</h3>
+                                <div class="description"><p><span style="font-weight: 400;">By leveraging web technologies instead of costly equipment, we bridge the digital divide in creative expression. SpecterBeats makes music technology equitable, lightweight, and sustainable, using minimal resources while reaching maximum audiences.</span></p>
+<p style="margin-top: 1.5rem;"><span style="font-weight: 400;">No subscriptions. No paywalls. Just open access to the joy of music. </span><i><span style="font-weight: 400;">For everyone, everywhere.</span></i></p>
+</div>
+                            </div>
+                            
+                            <!-- Globe Spline Embed -->
+                            <div class="globe-container" style="position: relative; width: 100%; aspect-ratio: 1; max-width: 600px; justify-self: end;">
+                                <iframe 
+                                    src="https://my.spline.design/3dglobe-Pttht5CXb4xrEuf7vD9YdxOv/" 
+                                    frameborder="0" 
+                                    width="100%" 
+                                    height="100%"
+                                    style="border: none; border-radius: 20px;"
+                                    title="3D Globe showing global reach"
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                        
+                        <div class="gradient gradient-top"></div>
+                        <div class="gradient gradient-bottom"></div>
+                        <div class="gradient gradient-left"></div>
+                        <div class="gradient gradient-right"></div>
+                    </div>
+
+                </div>
+
+                <!-- Phase Navigation Dots -->
+                <div class="horizontal-nav">
+                    <div class="nav-line">
+                        <div class="nav-dot active" data-index="0"></div>
+                        <div class="nav-dot" data-index="1"></div>
+                        <div class="nav-dot" data-index="2"></div>
+                        <div class="nav-dot" data-index="3"></div>
+                        <div class="nav-dot" data-index="4"></div>
+                        <div class="nav-dot" data-index="5"></div>
+                        <div class="nav-dot" data-index="6"></div>
+                        <div class="nav-dot" data-index="7"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gradient-mobile gradient-mobile-top"></div>
+            <div class="gradient-mobile gradient-mobile-bottom"></div>
+        </div>
+<div id="glitch-flash"></div>
+
+<style>
+#glitch-flash {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 60vw;   /* smaller width */
+  height: 60vh;  /* smaller height */
+  transform: translate(-50%, -50%); /* center it perfectly */
+  background: url('scarygirl.png') center center / contain no-repeat rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+}
+</style>
+
+<script>
+  function glitchFlash() {
+    const flash = document.getElementById('glitch-flash');
+    flash.style.opacity = '1';
+    setTimeout(() => flash.style.opacity = '0', 150);
+  }
+
+  // Trigger every 15 seconds
+  setInterval(glitchFlash, 15000);
+</script>
+
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+            }
+        });
+
+        // Hero loading handlers
+        function hideHeroLoading() {
+            const loadingElement = document.getElementById('hero-loading');
+            if (loadingElement) {
+                loadingElement.style.opacity = '0';
+                setTimeout(() => {
+                    loadingElement.style.display = 'none';
+                }, 300);
+            }
+        }
+        
+        function showHeroError() {
+            const loadingElement = document.getElementById('hero-loading');
+            const errorElement = document.getElementById('hero-error');
+            
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+            if (errorElement) {
+                errorElement.classList.remove('hidden');
+            }
+        }
+
+        // Phase navigation with scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.single_zone_slide');
+            const navDots = document.querySelectorAll('.nav-dot');
+            
+            // Update active dot based on scroll position
+            function updateActiveDot() {
+                const scrollPosition = window.scrollY + window.innerHeight / 2;
+                
+                slides.forEach((slide, index) => {
+                    const slideTop = slide.offsetTop;
+                    const slideBottom = slideTop + slide.offsetHeight;
+                    
+                    if (scrollPosition >= slideTop && scrollPosition < slideBottom) {
+                        navDots.forEach(dot => dot.classList.remove('active'));
+                        if (navDots[index]) {
+                            navDots[index].classList.add('active');
+                        }
+                    }
+                });
+            }
+            
+            // Scroll to slide when dot is clicked
+            navDots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    if (slides[index]) {
+                        slides[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Update on scroll
+            window.addEventListener('scroll', updateActiveDot);
+            updateActiveDot(); // Initial check
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

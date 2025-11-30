@@ -1,0 +1,24 @@
+.glitch-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glitch-flash.visible {
+  opacity: 1;
+}
+
+.glitch-flash img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
